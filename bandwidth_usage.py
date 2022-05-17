@@ -8,7 +8,6 @@ def __main__():
     while True:        
         get_bandwidth   = psutil.net_io_counters()
         bandwidth_used  = get_bandwidth.bytes_sent + get_bandwidth.bytes_recv - initial_total
-
         print_total(bandwidth_used)
         sleep(1)
 
