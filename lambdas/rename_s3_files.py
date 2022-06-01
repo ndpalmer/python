@@ -14,23 +14,13 @@ def lambda_handler(event, context):
     # Create list of objects in source bucket
     objects = s3client.list_objects_v2(Bucket=source_bucket)
     
-    # For each item in source bucket object list, copy to destination and rename. 
+    # For each item in source bucket, copy to destination and rename.
     for obj in objects['Contents']:
         copy_source = {'Bucket': source_bucket, 'Key': obj['Key']}
+        file_extension = obj['Key'].split('.')[-1]
+        new_key = str(uuid.uuid4()) + '.' + file_extension
         
-        # Generate a random name and append appropriate file extension.
-        if obj['Key'].lower.endswith('.jpg'):
-            new_key = str(uuid.uuid4().hex) + ".jpg"
-        elif obj['Key'].lower.endswith('.jpeg'):
-            new_key = str(uuid.uuid4().hex) + ".jpeg"
-        elif obj['Key'].lower.endswith('.png'):
-            new_key = str(uuid.uuid4().hex) + ".png"
-        elif obj['Key'].lower.endswith('.webp'):
-            new_key = str(uuid.uuid4().hex) + ".webp"
-        else
-            print("Uknown file format.")
-        
-        # Copy file to destination bucket and rename it.
+        # Copy file to destination bucket.
         s3.Object(dest_bucket,new_key).copy_from(CopySource=copy_source)
         
         # Delete file in source bucket.
